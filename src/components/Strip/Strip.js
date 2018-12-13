@@ -38,7 +38,7 @@ export class Strip extends Component {
   };
 
   render() {
-    let { leftPlayer, rightPlayer, maxLength, minLength} = this.props;
+    let { leftPlayer, rightPlayer, maxLength} = this.props;
     let le = Array(maxLength + 1)
       .fill()
       .map((_, i) => {
@@ -60,9 +60,9 @@ export class Strip extends Component {
     let _render =
     leftPlayer.stripLocation !== rightPlayer.stripLocation ? (
         <Aux>
-          <div>left player: {leftPlayer.stripLocation}</div>
+          <div>left player: {leftPlayer.stripLocation}，stepCount{leftPlayer.stepCount}</div>
           <div className="container">{le}</div>
-          <div>right player: {rightPlayer.stripLocation}</div>
+          <div>right player: {rightPlayer.stripLocation}，stepCount{rightPlayer.stepCount}</div>
         </Aux>
       ) : null;
 
