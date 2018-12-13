@@ -18,18 +18,17 @@ export class Strip extends Component {
   }
 
   setInitLocation = () => {
-    let { leftPlay, rightPlay } = this.props;
-    let { minLength, maxLength } = this.state;
+    let { leftPlayer, rightPlayer, minLength, maxLength } = this.props;
     let initLocation = [
       ...[
         {
-          name: leftPlay.name,
+          name: leftPlayer.name,
           stripLocation: minLength
         }
       ],
       ...[
         {
-          name: rightPlay.name,
+          name: rightPlayer.name,
           stripLocation: maxLength
         }
       ]
@@ -39,17 +38,17 @@ export class Strip extends Component {
   };
 
   render() {
-    let { leftPlay, rightPlay } = this.props;
-    let le = Array(this.state.maxLength + 1)
+    let { leftPlayer, rightPlayer, maxLength, minLength} = this.props;
+    let le = Array(maxLength + 1)
       .fill()
       .map((_, i) => {
         let who = {};
-        if (leftPlay.stripLocation !== rightPlay.stripLocation) {
-          if (leftPlay.stripLocation === i) {
-            who = leftPlay;
+        if (leftPlayer.stripLocation !== rightPlayer.stripLocation) {
+          if (leftPlayer.stripLocation === i) {
+            who = leftPlayer;
           }
-          if (rightPlay.stripLocation === i) {
-            who = rightPlay;
+          if (rightPlayer.stripLocation === i) {
+            who = rightPlayer;
           }
         }
 
@@ -59,11 +58,11 @@ export class Strip extends Component {
       });
 
     let _render =
-      leftPlay.stripLocation !== rightPlay.stripLocation ? (
+    leftPlayer.stripLocation !== rightPlayer.stripLocation ? (
         <Aux>
-          <div>left player: {leftPlay.stripLocation}</div>
+          <div>left player: {leftPlayer.stripLocation}</div>
           <div className="container">{le}</div>
-          <div>right player: {rightPlay.stripLocation}</div>
+          <div>right player: {rightPlayer.stripLocation}</div>
         </Aux>
       ) : null;
 
