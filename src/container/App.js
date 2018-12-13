@@ -30,7 +30,6 @@ class App extends Component {
 
   // 初始化設定玩家的位置
   setInitLocation = params => {
-    console.log(params);
     let ln_aLocation = 0;
     let ln_bLocation = 0;
 
@@ -66,7 +65,6 @@ class App extends Component {
     let ls_nextPlayer = currentPlayer;
     const h = {
       leftPlayer: () => {
-        console.log(ln_stripLocation, lo_otherPlayer)
         if (ln_stripLocation === lo_otherPlayer.stripLocation) {
           ln_stripLocation = lo_otherPlayer - 1;
           ln_stepCount = ln_stepCount + 1;
