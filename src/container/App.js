@@ -13,15 +13,15 @@ class App extends Component {
     this.state = {
       maxLength: 9,
       minLength: 0,
-      currentPlayer: gName.rightPlayer,
+      currentPlayer: gName.leftPlayer,
       leftPlayer: {
         name: gName.leftPlayer,
-        stepCount: 1,
+        stepCount: 8,
         stripLocation: 0
       },
       rightPlayer: {
         name: gName.rightPlayer,
-        stepCount: 0,
+        stepCount: 7,
         stripLocation: 0
       },
       message: ""
@@ -50,11 +50,107 @@ class App extends Component {
     });
   };
 
+  // 右邊按鈕
+  btnRight = () => {
+    let { currentPlayer, rightPlayer, maxLength } = this.state;
+    let lo_currentPlayer = this.state[currentPlayer];
+    let lo_otherPlayer = rightPlayer;
+
+    if (lo_currentPlayer.stepCount === 0) {
+      // 判斷輸贏
+      return;
+    }
+
+    let ln_stripLocation = lo_currentPlayer.stripLocation + 1;
+    let ln_stepCount = lo_currentPlayer.stepCount - 1;
+    let ls_nextPlayer = currentPlayer;
+    const h = {
+      leftPlayer: () => {
+        console.log(ln_stripLocation, lo_otherPlayer)
+        if (ln_stripLocation === lo_otherPlayer.stripLocation) {
+          ln_stripLocation = lo_otherPlayer - 1;
+          ln_stepCount = ln_stepCount + 1;
+        }
+
+        if (ln_stepCount === 0) {
+          ls_nextPlayer = gName.rightPlayer;
+        }
+      },
+      rightPlayer: () => {
+        if (ln_stripLocation > maxLength) {
+          ln_stripLocation = maxLength;
+          ln_stepCount = ln_stepCount + 1;
+        }
+
+        if (ln_stepCount === 0) {
+          ls_nextPlayer = gName.leftPlayer;
+        }
+      }
+    };
+    h[currentPlayer]();
+
+    if (lo_currentPlayer.stepCount === ln_stepCount) return;
+
+    this.playerHandler(
+      currentPlayer,
+      ln_stripLocation,
+      ln_stepCount,
+      ls_nextPlayer
+    );
+  };
+
+  // 左邊按鈕
+  btnLeft = () => {
+    let { currentPlayer, leftPlayer, minLength } = this.state;
+    let lo_currentPlayer = this.state[currentPlayer];
+    let lo_otherPlayer = leftPlayer;
+
+    if (lo_currentPlayer.stepCount === 0) {
+      // 判斷輸贏
+      return;
+    }
+
+    let ln_stripLocation = lo_currentPlayer.stripLocation - 1;
+    let ln_stepCount = lo_currentPlayer.stepCount - 1;
+    let ls_nextPlayer = currentPlayer;
+    const h = {
+      leftPlayer: () => {
+        if (ln_stripLocation < minLength) {
+          ln_stripLocation = minLength;
+          ln_stepCount++;
+        }
+
+        if (ln_stepCount === 0) {
+          ls_nextPlayer = gName.rightPlayer;
+        }
+      },
+      rightPlayer: () => {
+        if (ln_stripLocation === lo_otherPlayer.stripLocation) {
+          ln_stripLocation = lo_otherPlayer.stripLocation + 1;
+          ln_stepCount++;
+        }
+
+        if (ln_stepCount === 0) {
+          ls_nextPlayer = gName.leftPlayer;
+        }
+      }
+    };
+    h[currentPlayer]();
+
+    if (lo_currentPlayer.stepCount === ln_stepCount) return;
+
+    this.playerHandler(
+      currentPlayer,
+      ln_stripLocation,
+      ln_stepCount,
+      ls_nextPlayer
+    );
+  };
+
   // 玩家資料設定
-  playerHandler = (params, stripLocation, stepCount) => {
+  playerHandler = (params, stripLocation, stepCount, newPlayer) => {
     let h = {
       leftPlayer: () => {
-        // ...
         this.setState((state, props) => {
           return {
             leftPlayer: {
@@ -64,13 +160,13 @@ class App extends Component {
                 stepCount: stepCount
               }
             },
-            // currentPlayer: currentPlayer
+
+            currentPlayer: newPlayer
           };
         });
       },
 
       rightPlayer: () => {
-        // ...
         this.setState((state, props) => {
           return {
             rightPlayer: {
@@ -78,139 +174,13 @@ class App extends Component {
               stripLocation: stripLocation,
               stepCount: stepCount
             },
-            // currentPlayer: currentPlayer
+            currentPlayer: newPlayer
           };
         });
       }
     };
 
     h[params](stripLocation);
-  };
-
-  test = params => {
-    // 當前玩家
-    let lo_currentPlayer = this.state[params];
-    // 下家玩家
-    let lo_otherPlayer =
-      params === gName.leftPlayer
-        ? this.state[gName.rightPlayer]
-        : this.state[gName.leftPlayer];
-    console.log(lo_currentPlayer, lo_otherPlayer);
-
-    // 沒有步數就不能玩了
-    if (lo_currentPlayer.stepCount === 0) {
-      return;
-    }
-
-    // 減掉步數
-    let ln_stepCount = lo_currentPlayer.stepCount - 1;
-
-    let h = {
-      // 左邊玩家
-      leftPlayer: () => {
-        // 新的位置
-        let ln_stripLocation =
-          lo_currentPlayer.stripLocation + 1 >= lo_otherPlayer.stripLocation
-            ? lo_currentPlayer.stripLocation
-            : lo_currentPlayer.stripLocation + 1;
-
-        // 改變
-        this.setState((state, props) => {
-          return {
-            leftPlayer: {
-              ...state.leftPlayer,
-              ...{
-                stripLocation: ln_stripLocation,
-                stepCount: ln_stepCount
-              }
-            }
-          };
-        });
-      },
-
-      // 右邊玩家
-      rightPlayer: () => {}
-    };
-    h[params]();
-  };
-
-  btnRight = () => {
-    let { currentPlayer, rightPlayer, maxLength } = this.state;
-    let lo_currentPlayer = this.state[currentPlayer];
-    console.log()
-    let ln_stripLocation = lo_currentPlayer.stripLocation + 1;
-
-    // if (lo_currentPlayer.stepCount === 0) {
-    //   return;
-    // }
-
-    // this.test(currentPlayer);
-
-    if (currentPlayer === gName.rightPlayer) {
-      ln_stripLocation =
-        ln_stripLocation > maxLength ? maxLength : ln_stripLocation;
-    } else {
-      ln_stripLocation =
-        ln_stripLocation === rightPlayer.stripLocation
-          ? ln_stripLocation - 1
-          : ln_stripLocation;
-    }
-
-    let ln_stepCount = lo_currentPlayer.stepCount - 1;
-
-    // let ls = "";
-    // if (ln_stepCount === 0) {
-    //   ls =
-    //     lo_currentPlayer.name === gName.leftPlayer
-    //       ? gName.rightPlayer
-    //       : gName.leftPlayer;
-    // }
-
-    this.playerHandler(
-      currentPlayer,
-      ln_stripLocation,
-      ln_stepCount,
-      // ls
-    );
-  };
-
-  btnLeft = () => {
-    let { currentPlayer, leftPlayer, minLength } = this.state;
-    let lo_currentPlayer = this.state[currentPlayer];
-    let ln_stripLocation = lo_currentPlayer.stripLocation - 1;
-
-    // this.test(currentPlayer);
-
-    // if (lo_currentPlayer.stepCount === 0) {
-    //   return;
-    // }
-
-    if (currentPlayer === gName.leftPlayer) {
-      ln_stripLocation =
-        ln_stripLocation < minLength ? minLength : ln_stripLocation;
-    } else {
-      ln_stripLocation =
-        ln_stripLocation === leftPlayer.stripLocation
-          ? ln_stripLocation + 1
-          : ln_stripLocation;
-    }
-
-    let ln_stepCount = lo_currentPlayer.stepCount - 1;
-
-    // let ls = "";
-    // if (ln_stepCount === 0) {
-    //   ls =
-    //     lo_currentPlayer.name === gName.leftPlayer
-    //       ? gName.rightPlayer
-    //       : gName.leftPlayer;
-    // }
-
-    this.playerHandler(
-      this.state.currentPlayer,
-      ln_stripLocation,
-      ln_stepCount,
-      // ls
-    );
   };
 
   render() {
