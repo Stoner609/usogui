@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/_aux";
+import Box from "../Box/Box";
+
+import "./Strip.css";
 
 export class Strip extends Component {
   constructor(props) {
@@ -11,7 +14,7 @@ export class Strip extends Component {
   }
 
   componentDidMount() {
-      this.setInitLocation();
+    this.setInitLocation();
   }
 
   setInitLocation = () => {
@@ -36,18 +39,31 @@ export class Strip extends Component {
   };
 
   render() {
-
-    let le = Array(this.state.maxLength).fill().map((_, i) => {
-        return <div key={i}>{i}</div>
-    } )
-
     let { leftPlay, rightPlay } = this.props;
+    let le = Array(this.state.maxLength + 1)
+      .fill()
+      .map((_, i) => {
+        let who = {};
+        if (leftPlay.stripLocation !== rightPlay.stripLocation) {
+          if (leftPlay.stripLocation === i) {
+            who = leftPlay;
+          }
+          if (rightPlay.stripLocation === i) {
+            who = rightPlay;
+          }
+        }
+
+        return (
+          <Box key={i} index={i} who={who}></Box>
+        );
+      });
+
     let _render =
       leftPlay.stripLocation !== rightPlay.stripLocation ? (
         <Aux>
           <div>left player: {leftPlay.stripLocation}</div>
+          <div className="container">{le}</div>
           <div>right player: {rightPlay.stripLocation}</div>
-          {le}
         </Aux>
       ) : null;
 

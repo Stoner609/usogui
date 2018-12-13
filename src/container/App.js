@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Strip } from "../components/Strip/Strip";
-// import './App.css';
+import "./App.css";
 
 const gName = {
   playerA: "playerA",
@@ -38,26 +38,44 @@ class App extends Component {
       }
     });
 
-    this.setState({
-      playerA: {
-        stripLocation: ln_aLocation
-      },
-      playerB: {
-        stripLocation: ln_bLocation
-      }
+    this.setState((state, props) => {
+      return {
+        playerA: { ...state.playerA, stripLocation: ln_aLocation },
+        playerB: { ...state.playerB, stripLocation: ln_bLocation }
+      };
     });
+  };
+
+  btnRight = () => {
+    console.log(`btnRight`);
+    this.setState((state, props) => {
+      console.log(state)
+      return {
+        playerA: { ...state.playerA, stripLocation: state.playerA.stripLocation + 1 },
+      };
+    });
+  };
+
+  btnLeft = () => {
+    console.log(`btnLeft`);
   };
 
   render() {
     let { playerA, playerB } = this.state;
     return (
       <div className="App">
-        <div>噬謊者Game</div>
-        <Strip
-          leftPlay={playerA}
-          rightPlay={playerB}
-          setInitLocation={this.setInitLocation}
-        />
+        <div className="title">Game</div>
+        <div className="game">
+          <Strip
+            leftPlay={playerA}
+            rightPlay={playerB}
+            setInitLocation={this.setInitLocation}
+          />
+        </div>
+        <div className="control">
+          <button onClick={this.btnRight}>right</button>
+          <button onClick={this.btnLeft}>left</button>
+        </div>
       </div>
     );
   }
