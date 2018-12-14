@@ -16,16 +16,18 @@ class App extends Component {
       currentPlayer: gName.leftPlayer,
       leftPlayer: {
         name: gName.leftPlayer,
-        stepCount: 8,
+        stepCount: 0,
         stripLocation: 0
       },
       rightPlayer: {
         name: gName.rightPlayer,
-        stepCount: 7,
+        stepCount: 0,
         stripLocation: 0
       },
       message: ""
     };
+
+    this.buttonRef = React.createRef();
   }
 
   // 初始化設定玩家的位置
@@ -56,7 +58,6 @@ class App extends Component {
     let lo_otherPlayer = rightPlayer;
 
     if (lo_currentPlayer.stepCount === 0) {
-      // 判斷輸贏
       return;
     }
 
@@ -71,7 +72,12 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          ls_nextPlayer = gName.rightPlayer;
+          if (lo_otherPlayer.stripLocation === 9 && (lo_otherPlayer.stripLocation - ln_stripLocation) === 1) {
+            console.log('輸了');
+          } else {
+            ls_nextPlayer = gName.rightPlayer;
+            this.buttonRef.current.disabled = false;
+          }
         }
       },
       rightPlayer: () => {
@@ -81,7 +87,12 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          ls_nextPlayer = gName.leftPlayer;
+          if (lo_otherPlayer.stripLocation === 0 && (ln_stripLocation - lo_otherPlayer.stripLocation) === 1 ) {
+            console.log('輸了');
+          } else {
+            ls_nextPlayer = gName.leftPlayer;
+            this.buttonRef.current.disabled = '';
+          }
         }
       }
     };
@@ -91,9 +102,9 @@ class App extends Component {
 
     this.playerHandler(
       currentPlayer,
+      ls_nextPlayer,
       ln_stripLocation,
-      ln_stepCount,
-      ls_nextPlayer
+      ln_stepCount
     );
   };
 
@@ -104,7 +115,6 @@ class App extends Component {
     let lo_otherPlayer = leftPlayer;
 
     if (lo_currentPlayer.stepCount === 0) {
-      // 判斷輸贏
       return;
     }
 
@@ -119,7 +129,12 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          ls_nextPlayer = gName.rightPlayer;
+          if (lo_otherPlayer.stripLocation === 9 && (lo_otherPlayer.stripLocation - ln_stripLocation) === 1) {
+            console.log('輸了');
+          } else {
+            ls_nextPlayer = gName.rightPlayer;
+            this.buttonRef.current.disabled = false;
+          }
         }
       },
       rightPlayer: () => {
@@ -129,7 +144,12 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          ls_nextPlayer = gName.leftPlayer;
+          if (lo_otherPlayer.stripLocation === 0 && (ln_stripLocation - lo_otherPlayer.stripLocation) === 1 ) {
+            console.log('輸了');
+          } else {
+            ls_nextPlayer = gName.leftPlayer;
+            this.buttonRef.current.disabled = '';
+          }
         }
       }
     };
@@ -139,31 +159,27 @@ class App extends Component {
 
     this.playerHandler(
       currentPlayer,
+      ls_nextPlayer,
       ln_stripLocation,
-      ln_stepCount,
-      ls_nextPlayer
+      ln_stepCount
     );
   };
 
   // 玩家資料設定
-  playerHandler = (params, stripLocation, stepCount, newPlayer) => {
+  playerHandler = (currentPlayer, nextPlayer, stripLocation, stepCount) => {
     let h = {
       leftPlayer: () => {
         this.setState((state, props) => {
           return {
             leftPlayer: {
               ...state.leftPlayer,
-              ...{
-                stripLocation: stripLocation,
-                stepCount: stepCount
-              }
+              stripLocation: stripLocation,
+              stepCount: stepCount
             },
-
-            currentPlayer: newPlayer
+            currentPlayer: nextPlayer
           };
         });
       },
-
       rightPlayer: () => {
         this.setState((state, props) => {
           return {
@@ -172,13 +188,24 @@ class App extends Component {
               stripLocation: stripLocation,
               stepCount: stepCount
             },
-            currentPlayer: newPlayer
+            currentPlayer: nextPlayer
           };
         });
       }
     };
 
-    h[params](stripLocation);
+    h[currentPlayer](stripLocation);
+  };
+
+  // 產生步數
+  generateSetpCount = () => {
+    this.buttonRef.current.disabled = true;
+
+    let ranDom = Math.floor(Math.random() * 10) + 1;
+    let lo_currentPlayer = this.state[this.state.currentPlayer];
+    lo_currentPlayer.stepCount = ranDom;
+
+    this.setState({ [this.state.currentPlayer]: lo_currentPlayer });
   };
 
   render() {
@@ -186,7 +213,12 @@ class App extends Component {
     let { leftPlayer, rightPlayer, maxLength, minLength } = this.state;
     return (
       <div className="App">
-        <div className="title">目前回合：{this.state.currentPlayer}</div>
+        <div className="title">
+          <span>目前回合：{this.state.currentPlayer}</span>
+          <button onClick={this.generateSetpCount} ref={this.buttonRef}>
+            步數產生器
+          </button>
+        </div>
         <div className="game">
           <Strip
             leftPlayer={leftPlayer}
