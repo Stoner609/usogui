@@ -13,7 +13,7 @@ class App extends Component {
     this.state = {
       maxLength: 9,
       minLength: 0,
-      currentPlayer: gName.leftPlayer,
+      currentPlayer: gName.rightPlayer,
       leftPlayer: {
         name: gName.leftPlayer,
         stepCount: 0,
@@ -213,15 +213,36 @@ class App extends Component {
   generateSetpCount = () => {
     this.buttonRef.current.disabled = true;
 
-    let ranDom = Math.floor(Math.random() * 10) + 1;
+    let ranDom = Math.floor(Math.random() * 5) + 1;
     let lo_currentPlayer = this.state[this.state.currentPlayer];
-    lo_currentPlayer.stepCount = ranDom;
+    // lo_currentPlayer.stepCount = ranDom;
+    lo_currentPlayer.stepCount = 8;
 
     this.setState({ [this.state.currentPlayer]: lo_currentPlayer });
   };
 
+test = (stepCount, nextPlayer) => {
+  let {currentPlayer} = this.state;
+  
+  let h = {
+    leftPlayer: (stepCount) => {
+      this.setState((state, props) => {
+        return {
+          leftPlayer: {
+            ...state.leftPlayer,
+            stepCount: stepCount
+          },
+          currentPlayer: nextPlayer
+        }
+      })
+    }
+  }
+
+  h[currentPlayer](stepCount, nextPlayer);
+}
+
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     let {
       leftPlayer,
       rightPlayer,
@@ -245,6 +266,7 @@ class App extends Component {
             minLength={minLength}
             setInitLocation={this.setInitLocation}
             currentPlayer={currentPlayer}
+            test={this.test}
           />
         </div>
         <div className="control">
