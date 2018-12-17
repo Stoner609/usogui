@@ -72,8 +72,11 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          if (lo_otherPlayer.stripLocation === 9 && (lo_otherPlayer.stripLocation - ln_stripLocation) === 1) {
-            console.log('輸了');
+          if (
+            lo_otherPlayer.stripLocation === 9 &&
+            lo_otherPlayer.stripLocation - ln_stripLocation === 1
+          ) {
+            console.log("輸了");
           } else {
             ls_nextPlayer = gName.rightPlayer;
             this.buttonRef.current.disabled = false;
@@ -87,11 +90,14 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          if (lo_otherPlayer.stripLocation === 0 && (ln_stripLocation - lo_otherPlayer.stripLocation) === 1 ) {
-            console.log('輸了');
+          if (
+            lo_otherPlayer.stripLocation === 0 &&
+            ln_stripLocation - lo_otherPlayer.stripLocation === 1
+          ) {
+            console.log("輸了");
           } else {
             ls_nextPlayer = gName.leftPlayer;
-            this.buttonRef.current.disabled = '';
+            this.buttonRef.current.disabled = "";
           }
         }
       }
@@ -129,8 +135,11 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          if (lo_otherPlayer.stripLocation === 9 && (lo_otherPlayer.stripLocation - ln_stripLocation) === 1) {
-            console.log('輸了');
+          if (
+            lo_otherPlayer.stripLocation === 9 &&
+            lo_otherPlayer.stripLocation - ln_stripLocation === 1
+          ) {
+            console.log("輸了");
           } else {
             ls_nextPlayer = gName.rightPlayer;
             this.buttonRef.current.disabled = false;
@@ -144,11 +153,14 @@ class App extends Component {
         }
 
         if (ln_stepCount === 0) {
-          if (lo_otherPlayer.stripLocation === 0 && (ln_stripLocation - lo_otherPlayer.stripLocation) === 1 ) {
-            console.log('輸了');
+          if (
+            lo_otherPlayer.stripLocation === 0 &&
+            ln_stripLocation - lo_otherPlayer.stripLocation === 1
+          ) {
+            console.log("輸了");
           } else {
             ls_nextPlayer = gName.leftPlayer;
-            this.buttonRef.current.disabled = '';
+            this.buttonRef.current.disabled = "";
           }
         }
       }
@@ -210,7 +222,13 @@ class App extends Component {
 
   render() {
     console.log(this.state);
-    let { leftPlayer, rightPlayer, maxLength, minLength } = this.state;
+    let {
+      leftPlayer,
+      rightPlayer,
+      maxLength,
+      minLength,
+      currentPlayer
+    } = this.state;
     return (
       <div className="App">
         <div className="title">
@@ -219,13 +237,14 @@ class App extends Component {
             步數產生器
           </button>
         </div>
-        <div className="game">
+        <div className="">
           <Strip
             leftPlayer={leftPlayer}
             rightPlayer={rightPlayer}
             maxLength={maxLength}
             minLength={minLength}
             setInitLocation={this.setInitLocation}
+            currentPlayer={currentPlayer}
           />
         </div>
         <div className="control">

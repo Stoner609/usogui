@@ -8,13 +8,6 @@
   text-align:center;
 }
 
-.game {
-  margin: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
 .control {
   display: flex;
   justify-content: center;
