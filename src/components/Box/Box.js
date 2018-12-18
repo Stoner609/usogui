@@ -5,17 +5,17 @@ import "./Box.css";
 export class Box extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-        test: '12'
-    }
   }
 
   componentDidMount() {
-      console.log(this.props);
+    // console.log(this.props);
   }
 
   render() {
-    return <div className="box">{this.props.index} {this.props.who.name}</div>;
+    let radiusColor = this.props.who.name === 'leftPlayer' ? 'radius radius_red' : 'radius radius_green'
+    let radius = this.props.who.name == null ? null : <div className={radiusColor} />;
+
+    return <div className="box">{radius}</div>;
   }
 }
 

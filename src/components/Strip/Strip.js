@@ -8,12 +8,12 @@ export class Strip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minLength: 0,
-      maxLength: 9,
+      minLength: this.props.min,
+      maxLength: this.props.max,
+      leftPosition: this.props.min,
+      rightPosition: this.props.max,
       leftPlayer: props.leftPlayer,
       rightPlayer: props.rightPlayer,
-      leftPosition: 0,
-      rightPosition: 9
     };
   }
 
@@ -39,23 +39,24 @@ export class Strip extends Component {
     return true;
   }
 
-  componentDidMount() {}
-
   // 右邊按鈕
   btnRight = () => {
-    // 當前玩家
-    let { currentPlayer } = this.props;
-    // 當前玩家資料
-    let lo_currentPlayer = this.state[currentPlayer];
-    // 左邊玩家位置、右邊玩家位置、最大值
-    let { leftPlayer, rightPlayer, leftPosition, rightPosition, maxLength } = this.state;
+    let { currentPlayer } = this.props; // 當前玩家
+    let lo_currentPlayer = this.state[currentPlayer]; // 當前玩家資料
+    let {
+      leftPlayer,
+      rightPlayer,
+      leftPosition,
+      rightPosition,
+      maxLength
+    } = this.state; // 左邊玩家位置、右邊玩家位置、最大值
 
     if (lo_currentPlayer.stepCount === 0) return;
 
     let ln_position = 0; // 位置
     let ln_stepCount = lo_currentPlayer.stepCount - 1; // 步數
     let ls_nextPlayer = currentPlayer; // 下一位玩家
-    let lb_lose = false;
+    let lb_enemyLose = false; // 輸贏判斷
     const h = {
       leftPlayer: () => {
         ln_position = leftPosition + 1;
@@ -65,11 +66,9 @@ export class Strip extends Component {
         }
 
         if (ln_stepCount === 0) {
+          ls_nextPlayer = rightPlayer.name;
           if (rightPosition === 9 && rightPosition - ln_position === 1) {
-            console.log("輸了");
-            lb_lose = true;
-          } else {
-            ls_nextPlayer = rightPlayer.name;
+            lb_enemyLose = true;
           }
         }
       },
@@ -81,12 +80,7 @@ export class Strip extends Component {
         }
 
         if (ln_stepCount === 0) {
-          if (leftPosition === 0 && rightPosition - ln_position === 1) {
-            console.log("輸了");
-            lb_lose = true;
-          } else {
-            ls_nextPlayer = leftPlayer.name;
-          }
+          ls_nextPlayer = leftPlayer.name;
         }
       }
     };
@@ -94,24 +88,33 @@ export class Strip extends Component {
 
     if (lo_currentPlayer.stepCount === ln_stepCount) return;
 
-    this.playerHandler(currentPlayer, ln_position, ln_stepCount, ls_nextPlayer, lb_lose);
+    this.playerHandler(
+      currentPlayer,
+      ln_position,
+      ln_stepCount,
+      ls_nextPlayer,
+      lb_enemyLose
+    );
   };
 
   // 左邊按鈕
   btnLeft = () => {
-    // 當前玩家
-    let { currentPlayer } = this.props;
-    // 當前玩家資料
-    let lo_currentPlayer = this.state[currentPlayer];
-    // 左邊玩家位置、右邊玩家位置、最小值
-    let { leftPlayer, rightPlayer, leftPosition, rightPosition, minLength } = this.state;
+    let { currentPlayer } = this.props; // 當前玩家
+    let lo_currentPlayer = this.state[currentPlayer]; // 當前玩家資料
+    let {
+      leftPlayer,
+      rightPlayer,
+      leftPosition,
+      rightPosition,
+      minLength
+    } = this.state; // 左邊玩家位置、右邊玩家位置、最小值
 
     if (lo_currentPlayer.stepCount === 0) return;
 
     let ln_position = 0;
     let ln_stepCount = lo_currentPlayer.stepCount - 1;
     let ls_nextPlayer = currentPlayer;
-    let lb_lose = false;
+    let lb_enemyLose = false;
     const h = {
       leftPlayer: () => {
         ln_position = leftPosition - 1;
@@ -121,12 +124,7 @@ export class Strip extends Component {
         }
 
         if (ln_stepCount === 0) {
-          if (rightPosition === 9 && rightPosition - ln_position === 1) {
-            console.log("輸了");
-            lb_lose = true;
-          } else {
-            ls_nextPlayer = rightPlayer.name;
-          }
+          ls_nextPlayer = rightPlayer.name;
         }
       },
       rightPlayer: () => {
@@ -138,11 +136,9 @@ export class Strip extends Component {
         }
 
         if (ln_stepCount === 0) {
+          ls_nextPlayer = leftPlayer.name;
           if (leftPosition === 0 && ln_position - leftPosition === 1) {
-            console.log("輸了");
-            lb_lose = true;
-          } else {
-            ls_nextPlayer = leftPlayer.name;
+            lb_enemyLose = true; // 對方輸了
           }
         }
       }
@@ -151,7 +147,13 @@ export class Strip extends Component {
 
     if (lo_currentPlayer.stepCount === ln_stepCount) return;
 
-    this.playerHandler(currentPlayer, ln_position, ln_stepCount, ls_nextPlayer, lb_lose);
+    this.playerHandler(
+      currentPlayer,
+      ln_position,
+      ln_stepCount,
+      ls_nextPlayer,
+      lb_enemyLose
+    );
   };
 
   // 設定 玩家位置
@@ -197,15 +199,7 @@ export class Strip extends Component {
     let _render =
       leftPosition !== rightPosition ? (
         <div className="game">
-          <div>
-            left player: {leftPosition}，stepCount
-            {leftPlayer.stepCount}
-          </div>
           <div className="container">{le}</div>
-          <div>
-            right player: {rightPosition}，stepCount
-            {rightPlayer.stepCount}
-          </div>
         </div>
       ) : null;
 
