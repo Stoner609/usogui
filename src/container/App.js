@@ -32,41 +32,42 @@ class App extends Component {
 
     let ranDom = Math.floor(Math.random() * 5) + 1;
     let lo_currentPlayer = this.state[this.state.currentPlayer];
-    lo_currentPlayer.stepCount = ranDom;
+    // lo_currentPlayer.stepCount = ranDom;
+    lo_currentPlayer.stepCount = 8;
 
     this.setState({ [this.state.currentPlayer]: lo_currentPlayer });
   };
 
   // 設定 玩家步數、下一位玩家
-  playerHandler = (stepCount, nextPlayer) => {
+  playerHandler = (stepCount, nextPlayer, lose) => {
     let { currentPlayer } = this.state;
 
-    let h = {
-      leftPlayer: stepCount => {
-        this.setState((state, props) => {
-          return {
-            leftPlayer: {
-              ...state.leftPlayer,
-              stepCount: stepCount
-            },
-            currentPlayer: nextPlayer
-          };
-        });
-      },
-      rightPlayer: stepCount => {
-        this.setState((state, props) => {
-          return {
-            rightPlayer: {
-              ...state.rightPlayer,
-              stepCount: stepCount
-            },
-            currentPlayer: nextPlayer
-          };
-        });
-      }
-    };
+    let a = lose ? '你輸了' : '';
 
-    h[currentPlayer](stepCount, nextPlayer);
+    const h = {
+      leftPlayer: () => ({
+        leftPlayer: {
+          ...this.state.leftPlayer,
+          stepCount: stepCount
+        },
+        currentPlayer: nextPlayer,
+        message: a
+      }),
+      rightPlayer: () => ({ 
+        rightPlayer: {
+          ...this.state.rightPlayer,
+          stepCount: stepCount
+        },
+        currentPlayer: nextPlayer,
+        message: a
+      })
+    };
+    let lo_data = h[currentPlayer](stepCount, nextPlayer);
+
+    this.setState((state, props) => {
+      return lo_data
+    });
+
     this.buttonRef.current.disabled = "";
   };
 
@@ -88,6 +89,8 @@ class App extends Component {
             playerHandler={this.playerHandler}
           />
         </div>
+        
+        {this.state.message}
       </div>
     );
   }
