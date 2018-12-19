@@ -21,7 +21,19 @@ class App extends Component {
         name: gName.rightPlayer,
         stepCount: 0
       },
-      message: ""
+      message: "",
+      games: [
+        {
+          id: 1,
+          val: false,
+          length: 9
+        },
+        {
+          id: 2,
+          val: false,
+          length: 4
+        }
+      ]
     };
 
     this.buttonRef = React.createRef();
@@ -34,16 +46,21 @@ class App extends Component {
     let ranDom = Math.floor(Math.random() * 5) + 1;
     let lo_currentPlayer = this.state[this.state.currentPlayer];
     lo_currentPlayer.stepCount = ranDom;
-    // lo_currentPlayer.stepCount = 8;
+    // lo_currentPlayer.stepCount = 1;
 
     this.setState({ [this.state.currentPlayer]: lo_currentPlayer });
   };
 
   // 設定 玩家步數、下一位玩家
-  playerHandler = (stepCount, nextPlayer, enemyLose) => {
-    let { currentPlayer } = this.state;
+  playerHandler = (stepCount, nextPlayer, enemyLose, game) => {
+    let { currentPlayer, games } = this.state;
 
-    let ls_message = enemyLose ? `${nextPlayer}輸了` : "";
+    // let ls_message = enemyLose ? `${nextPlayer}輸了` : ""; //給我刪掉
+    let ls_message = "";
+
+    let _idx = games.findIndex(data => data.id !== game.id);
+    let lo_games = [...[], ...games];
+    lo_games[_idx].val = game.val;
 
     const h = {
       leftPlayer: () => ({
@@ -52,7 +69,8 @@ class App extends Component {
           stepCount: stepCount
         },
         currentPlayer: nextPlayer,
-        message: ls_message
+        message: ls_message,
+        games: lo_games
       }),
       rightPlayer: () => ({
         rightPlayer: {
@@ -60,7 +78,8 @@ class App extends Component {
           stepCount: stepCount
         },
         currentPlayer: nextPlayer,
-        message: ls_message
+        message: ls_message,
+        games: lo_games
       })
     };
     let lo_data = h[currentPlayer](stepCount, nextPlayer);
@@ -73,7 +92,23 @@ class App extends Component {
   };
 
   render() {
-    let { leftPlayer, rightPlayer, currentPlayer } = this.state;
+    let { leftPlayer, rightPlayer, currentPlayer, games } = this.state;
+
+    let strip = games.map(data => {
+      return (
+        <Strip
+          leftPlayer={leftPlayer}
+          rightPlayer={rightPlayer}
+          currentPlayer={currentPlayer}
+          playerHandler={this.playerHandler}
+          max={data.length}
+          id={data.id}
+          val={data.val}
+          key={data.id}
+        />
+      );
+    });
+
     return (
       <div className="App">
         <div className="title">
@@ -88,13 +123,13 @@ class App extends Component {
           <span>右邊步數:{this.state.rightPlayer.stepCount}</span>
         </div>
         <Aux>
-          <Strip
+          {strip}
+          {/* <Strip
             leftPlayer={leftPlayer}
             rightPlayer={rightPlayer}
             currentPlayer={currentPlayer}
             playerHandler={this.playerHandler}
             max={9}
-            min={0}
           />
           <Strip
             leftPlayer={leftPlayer}
@@ -102,8 +137,7 @@ class App extends Component {
             currentPlayer={currentPlayer}
             playerHandler={this.playerHandler}
             max={4}
-            min={0}
-          />
+          /> */}
         </Aux>
       </div>
     );
