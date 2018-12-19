@@ -40,7 +40,6 @@ export class Strip extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(prevProps, prevState);
     if (prevProps.val !== this.props.val && this.props.val) {
       let { currentPlayer } = this.props;
       switch (currentPlayer) {
@@ -50,8 +49,6 @@ export class Strip extends Component {
             this.state.rightPosition - this.state.leftPosition === 1
           ) {
             alert(currentPlayer + "你他媽輸了");
-          } else {
-            console.log(1);
           }
           break;
         }
@@ -62,8 +59,6 @@ export class Strip extends Component {
           ) {
             console.log(this.state.rightPosition, this.state.leftPosition);
             alert(currentPlayer + "你他媽輸了");
-          } else {
-            console.log(1);
           }
           break;
         }

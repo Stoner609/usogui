@@ -21,7 +21,6 @@ class App extends Component {
         name: gName.rightPlayer,
         stepCount: 0
       },
-      message: "",
       games: [
         {
           id: 1,
@@ -33,7 +32,8 @@ class App extends Component {
           val: false,
           length: 4
         }
-      ]
+      ],
+      message: "",
     };
 
     this.buttonRef = React.createRef();
@@ -46,7 +46,6 @@ class App extends Component {
     let ranDom = Math.floor(Math.random() * 5) + 1;
     let lo_currentPlayer = this.state[this.state.currentPlayer];
     lo_currentPlayer.stepCount = ranDom;
-    // lo_currentPlayer.stepCount = 1;
 
     this.setState({ [this.state.currentPlayer]: lo_currentPlayer });
   };
@@ -124,20 +123,6 @@ class App extends Component {
         </div>
         <Aux>
           {strip}
-          {/* <Strip
-            leftPlayer={leftPlayer}
-            rightPlayer={rightPlayer}
-            currentPlayer={currentPlayer}
-            playerHandler={this.playerHandler}
-            max={9}
-          />
-          <Strip
-            leftPlayer={leftPlayer}
-            rightPlayer={rightPlayer}
-            currentPlayer={currentPlayer}
-            playerHandler={this.playerHandler}
-            max={4}
-          /> */}
         </Aux>
       </div>
     );
