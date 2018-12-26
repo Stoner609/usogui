@@ -36,11 +36,17 @@ export class Strip extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextState.leftPosition === this.state.leftPosition &&
+      nextState.rightPosition === this.state.rightPosition
+    ) {
+      return false;
+    }
     return true;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.val !== this.props.val && this.props.val) {
+    if (prevProps.isLoseMark !== this.props.isLoseMark && this.props.isLoseMark) {
       let { currentPlayer } = this.props;
       switch (currentPlayer) {
         case "leftPlayer": {
@@ -73,11 +79,11 @@ export class Strip extends Component {
     let { currentPlayer, id } = this.props; // 當前玩家
     let lo_currentPlayer = this.state[currentPlayer]; // 當前玩家資料
     let {
-      leftPlayer,
-      rightPlayer,
+      maxLength,
       leftPosition,
       rightPosition,
-      maxLength
+      leftPlayer,
+      rightPlayer,
     } = this.state; // 左邊玩家位置、右邊玩家位置、最大值
 
     if (lo_currentPlayer.stepCount === 0) return;
@@ -85,7 +91,8 @@ export class Strip extends Component {
     let ln_position = 0; // 位置
     let ln_stepCount = lo_currentPlayer.stepCount - 1; // 步數
     let ls_nextPlayer = currentPlayer; // 下一位玩家
-    let lb_enemyLose = false; // 輸贏判斷
+    let lb_isEnemyLoseMark = false; // 判斷對方輸贏
+
     const h = {
       leftPlayer: () => {
         ln_position = leftPosition + 1;
@@ -100,7 +107,7 @@ export class Strip extends Component {
             rightPosition === maxLength &&
             rightPosition - ln_position === 1
           ) {
-            lb_enemyLose = true;
+            lb_isEnemyLoseMark = true;
           }
         }
       },
@@ -122,7 +129,7 @@ export class Strip extends Component {
 
     let game = {
       id: id,
-      val: lb_enemyLose
+      isLoseMark: lb_isEnemyLoseMark
     };
 
     this.playerHandler(
@@ -130,7 +137,7 @@ export class Strip extends Component {
       ln_position,
       ln_stepCount,
       ls_nextPlayer,
-      lb_enemyLose,
+      lb_isEnemyLoseMark,
       game
     );
   };
@@ -152,7 +159,8 @@ export class Strip extends Component {
     let ln_position = 0;
     let ln_stepCount = lo_currentPlayer.stepCount - 1;
     let ls_nextPlayer = currentPlayer;
-    let lb_enemyLose = false;
+    let lb_isEnemyLoseMark = false;
+
     const h = {
       leftPlayer: () => {
         ln_position = leftPosition - 1;
@@ -176,7 +184,7 @@ export class Strip extends Component {
         if (ln_stepCount === 0) {
           ls_nextPlayer = leftPlayer.name;
           if (leftPosition === 0 && ln_position - leftPosition === 1) {
-            lb_enemyLose = true; // 對方輸了
+            lb_isEnemyLoseMark = true; // 對方輸了
           }
         }
       }
@@ -187,7 +195,7 @@ export class Strip extends Component {
 
     let game = {
       id: id,
-      val: lb_enemyLose
+      isLoseMark: lb_isEnemyLoseMark
     };
 
     this.playerHandler(
@@ -195,7 +203,7 @@ export class Strip extends Component {
       ln_position,
       ln_stepCount,
       ls_nextPlayer,
-      lb_enemyLose,
+      lb_isEnemyLoseMark,
       game
     );
   };
@@ -212,8 +220,6 @@ export class Strip extends Component {
     const h = {
       leftPlayer: () => ({ leftPosition: position }),
       rightPlayer: () => ({ rightPosition: position })
-      // leftPlayer: () => ({ leftPosition: this.props.aa }),
-      // rightPlayer: () => ({ rightPosition: this.props.aa })
     };
     let lo_data = h[currentPlayer]();
 

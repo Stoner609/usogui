@@ -24,16 +24,15 @@ class App extends Component {
       games: [
         {
           id: 1,
-          val: false,
+          isLoseMark: false,
           length: 9
         },
         {
           id: 2,
-          val: false,
+          isLoseMark: false,
           length: 4
         }
-      ],
-      message: "",
+      ]
     };
 
     this.buttonRef = React.createRef();
@@ -44,47 +43,41 @@ class App extends Component {
     this.buttonRef.current.disabled = "disabled";
 
     let ranDom = Math.floor(Math.random() * 5) + 1;
-    let lo_currentPlayer = this.state[this.state.currentPlayer];
+    let { ...lo_currentPlayer } = this.state[this.state.currentPlayer];
     lo_currentPlayer.stepCount = ranDom;
 
     this.setState({ [this.state.currentPlayer]: lo_currentPlayer });
   };
 
-  // 設定 玩家步數、下一位玩家
-  playerHandler = (stepCount, nextPlayer, enemyLose, game) => {
+  // 設定 State 的資料
+  setData = (currentPlayer, stepCount, nextPlayer, lo_games) => {
+    return {
+      [currentPlayer]: {
+        ...this.state[currentPlayer],
+        stepCount: stepCount
+      },
+      currentPlayer: nextPlayer,
+      games: lo_games
+    };
+  };
+
+  // [狀態更新] 玩家步數、下一位玩家
+  playerHandler = (_stepCount, _nextPlayer, _enemyLose, _game) => {
     let { currentPlayer, games } = this.state;
 
-    // let ls_message = enemyLose ? `${nextPlayer}輸了` : ""; //給我刪掉
-    let ls_message = "";
+    let ln_gameIdx = games.findIndex(data => data.id !== _game.id);
+    let la_games = [...[], ...games];
+    la_games[ln_gameIdx].isLoseMark = _game.isLoseMark;
 
-    let _idx = games.findIndex(data => data.id !== game.id);
-    let lo_games = [...[], ...games];
-    lo_games[_idx].val = game.val;
-
-    const h = {
-      leftPlayer: () => ({
-        leftPlayer: {
-          ...this.state.leftPlayer,
-          stepCount: stepCount
-        },
-        currentPlayer: nextPlayer,
-        message: ls_message,
-        games: lo_games
-      }),
-      rightPlayer: () => ({
-        rightPlayer: {
-          ...this.state.rightPlayer,
-          stepCount: stepCount
-        },
-        currentPlayer: nextPlayer,
-        message: ls_message,
-        games: lo_games
-      })
-    };
-    let lo_data = h[currentPlayer](stepCount, nextPlayer);
+    const lo_newData = this.setData(
+      currentPlayer,
+      _stepCount,
+      _nextPlayer,
+      la_games
+    );
 
     this.setState((state, props) => {
-      return lo_data;
+      return lo_newData;
     });
 
     this.buttonRef.current.disabled = "";
@@ -102,7 +95,7 @@ class App extends Component {
           playerHandler={this.playerHandler}
           max={data.length}
           id={data.id}
-          val={data.val}
+          isLoseMark={data.isLoseMark}
           key={data.id}
         />
       );
@@ -115,15 +108,12 @@ class App extends Component {
           <button onClick={this.generateSetpCount} ref={this.buttonRef}>
             步數產生器
           </button>
-          <span>{this.state.message}</span>
         </div>
         <div className="step">
           <span>左邊步數: {this.state.leftPlayer.stepCount}</span>
           <span>右邊步數:{this.state.rightPlayer.stepCount}</span>
         </div>
-        <Aux>
-          {strip}
-        </Aux>
+        <Aux>{strip}</Aux>
       </div>
     );
   }
