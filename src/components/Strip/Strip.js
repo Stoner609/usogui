@@ -46,7 +46,10 @@ export class Strip extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.isLoseMark !== this.props.isLoseMark && this.props.isLoseMark) {
+    if (
+      prevProps.isLoseMark !== this.props.isLoseMark &&
+      this.props.isLoseMark
+    ) {
       let { currentPlayer } = this.props;
       switch (currentPlayer) {
         case "leftPlayer": {
@@ -83,7 +86,7 @@ export class Strip extends Component {
       leftPosition,
       rightPosition,
       leftPlayer,
-      rightPlayer,
+      rightPlayer
     } = this.state; // 左邊玩家位置、右邊玩家位置、最大值
 
     if (lo_currentPlayer.stepCount === 0) return;
@@ -266,8 +269,8 @@ export class Strip extends Component {
       <Aux>
         {_render}
         <div className="control">
-          <button onClick={this.btnLeft}>L</button>
-          <button onClick={this.btnRight}>R</button>
+          <button onClick={this.btnLeft}>Left</button>
+          <button onClick={this.btnRight}>Right</button>
         </div>
       </Aux>
     );
