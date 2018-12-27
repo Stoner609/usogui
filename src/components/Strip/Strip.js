@@ -38,7 +38,8 @@ export class Strip extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (
       nextState.leftPosition === this.state.leftPosition &&
-      nextState.rightPosition === this.state.rightPosition
+      nextState.rightPosition === this.state.rightPosition &&
+      nextProps.currentPlayer === this.props.currentPlayer
     ) {
       return false;
     }
@@ -208,21 +209,6 @@ export class Strip extends Component {
     );
   };
 
-  // 設定 玩家位置
-  playerHandler = (currentPlayer, position, stepCount, nextPlayer, game) => {
-    const h = {
-      leftPlayer: () => ({ leftPosition: position }),
-      rightPlayer: () => ({ rightPosition: position })
-    };
-    let lo_data = h[currentPlayer]();
-
-    this.setState((state, props) => {
-      return lo_data;
-    });
-
-    this.props.playerHandler(stepCount, nextPlayer, game);
-  };
-
   // 用點的更換位置
   clickBox = event => {
     const { currentPlayer, id } = this.props;
@@ -284,6 +270,21 @@ export class Strip extends Component {
     );
   };
 
+  // 設定 玩家位置
+  playerHandler = (currentPlayer, position, stepCount, nextPlayer, game) => {
+    const h = {
+      leftPlayer: () => ({ leftPosition: position }),
+      rightPlayer: () => ({ rightPosition: position })
+    };
+    let lo_data = h[currentPlayer]();
+
+    this.setState((state, props) => {
+      return lo_data;
+    });
+
+    this.props.playerHandler(stepCount, nextPlayer, game);
+  };
+
   render() {
     let {
       maxLength,
@@ -307,7 +308,13 @@ export class Strip extends Component {
         }
 
         return (
-          <Box key={i} index={i} who={who} clickBox={this.clickBox} />
+          <Box
+            key={i}
+            index={i}
+            who={who}
+            currentPlayer={this.props.currentPlayer}
+            clickBox={this.clickBox}
+          />
         );
       });
 

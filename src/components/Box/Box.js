@@ -16,12 +16,28 @@ export class Box extends Component {
   };
 
   render() {
+    let shining = "";
+    if (
+      this.props.currentPlayer === "leftPlayer" &&
+      this.props.who.name === "leftPlayer"
+    ) {
+      shining = "radius_red_animation";
+    } else if (
+      this.props.currentPlayer === "rightPlayer" &&
+      this.props.who.name === "rightPlayer"
+    ) {
+      shining = "radius_green_animation";
+    }
+
     let radiusColor =
       this.props.who.name === "leftPlayer"
-        ? "radius radius_red"
-        : "radius radius_green";
+        ? ["radius", "radius_red", `${shining}`]
+        : ["radius", "radius_green", `${shining}`];
+
     let radius =
-      this.props.who.name == null ? null : <div className={radiusColor} />;
+      this.props.who.name == null ? null : (
+        <div className={radiusColor.join(" ")} />
+      );
 
     return (
       <div className="box" onClick={this.clickBox}>

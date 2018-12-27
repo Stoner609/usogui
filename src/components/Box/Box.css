@@ -19,6 +19,44 @@
   background-color: red;
 }
 
+.radius_red_animation {
+  animation: animationRed 2s infinite;
+}
+
 .radius_green { 
   background-color: green;
+}
+
+.radius_green_animation { 
+  animation: animationGreen 2s infinite;
+}
+
+@keyframes animationRed {
+  0% {
+    -moz-box-shadow: 0 0 0 0 red;
+    box-shadow: 0 0 0 0 red;
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 20px rgba(204,169,44, 0);
+    box-shadow: 0 0 0 20px rgba(204,169,44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+  }
+}
+
+@keyframes animationGreen {
+  0% {
+    -moz-box-shadow: 0 0 0 0 green;
+    box-shadow: 0 0 0 0 green;
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 20px rgba(204,169,44, 0);
+    box-shadow: 0 0 0 20px rgba(204,169,44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+  }
 }
