@@ -119,11 +119,17 @@ class App extends Component {
             步數產生器
           </button>
         </div>
-        <div className="step">
-          <span>左邊步數: {this.state.leftPlayer.stepCount}</span>
-          <span>右邊步數:{this.state.rightPlayer.stepCount}</span>
+        <div className="container">
+          <div>
+            <span>左邊步數: {this.state.leftPlayer.stepCount}</span>
+          </div>
+          <div>
+            <Aux>{strip}</Aux>
+          </div>
+          <div>
+            <span>右邊步數:{this.state.rightPlayer.stepCount}</span>
+          </div>
         </div>
-        <Aux>{strip}</Aux>
       </div>
     );
   }

@@ -321,17 +321,19 @@ export class Strip extends Component {
     let _render =
       leftPosition !== rightPosition ? (
         <div className="game">
-          <div className="container">{stripLength}</div>
+          <div className="game_container">{stripLength}</div>
+          <div className="control">
+            {/* <button onClick={this.btnLeft}></button>
+            <button onClick={this.btnRight}></button> */}
+            <span class="arrow" onClick={this.btnLeft}>❮</span>
+            <span class="arrow" onClick={this.btnRight}>❯</span>
+          </div>
         </div>
       ) : null;
 
     return (
       <Aux>
         {_render}
-        <div className="control">
-          <button onClick={this.btnLeft}>Left</button>
-          <button onClick={this.btnRight}>Right</button>
-        </div>
       </Aux>
     );
   }

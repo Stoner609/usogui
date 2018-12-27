@@ -1,4 +1,8 @@
-.container {
+.game {
+  margin: 10px;
+}
+
+.game_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,15 +11,25 @@
   height: 300px;
 }
 
-.game {
-  margin: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
 .control {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.control button {
+  margin: 2px;
+}
+
+.arrow {
+  display: inline-block;
+  line-height: 2.5em;
+  text-align: center;
+  background: #333;
+  color: white;
+  font-size: 1em;
+  width: 2.5em;
+  transition: margin 200ms;
+  margin-left: .75em;
+  cursor: pointer;
 }
