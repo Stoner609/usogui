@@ -66,7 +66,6 @@ export class Strip extends Component {
             this.state.rightPosition === this.state.maxLength &&
             this.state.rightPosition - this.state.leftPosition === 1
           ) {
-            console.log(this.state.rightPosition, this.state.leftPosition);
             alert(currentPlayer + "你他媽輸了");
           }
           break;
@@ -130,7 +129,7 @@ export class Strip extends Component {
 
     if (lo_currentPlayer.stepCount === ln_stepCount) return;
 
-    let game = {
+    let lo_game = {
       id: id,
       isLoseMark: lb_isEnemyLoseMark
     };
@@ -140,8 +139,7 @@ export class Strip extends Component {
       ln_position,
       ln_stepCount,
       ls_nextPlayer,
-      lb_isEnemyLoseMark,
-      game
+      lo_game
     );
   };
 
@@ -196,7 +194,7 @@ export class Strip extends Component {
 
     if (lo_currentPlayer.stepCount === ln_stepCount) return;
 
-    let game = {
+    let lo_game = {
       id: id,
       isLoseMark: lb_isEnemyLoseMark
     };
@@ -206,20 +204,12 @@ export class Strip extends Component {
       ln_position,
       ln_stepCount,
       ls_nextPlayer,
-      lb_isEnemyLoseMark,
-      game
+      lo_game
     );
   };
 
   // 設定 玩家位置
-  playerHandler = (
-    currentPlayer,
-    position,
-    stepCount,
-    nextPlayer,
-    lose,
-    game
-  ) => {
+  playerHandler = (currentPlayer, position, stepCount, nextPlayer, game) => {
     const h = {
       leftPlayer: () => ({ leftPosition: position }),
       rightPlayer: () => ({ rightPosition: position })
@@ -230,7 +220,68 @@ export class Strip extends Component {
       return lo_data;
     });
 
-    this.props.playerHandler(stepCount, nextPlayer, lose, game);
+    this.props.playerHandler(stepCount, nextPlayer, game);
+  };
+
+  // 用點的更換位置
+  clickBox = event => {
+    const { currentPlayer, id } = this.props;
+    const {
+      minLength,
+      maxLength,
+      leftPosition,
+      rightPosition,
+      leftPlayer,
+      rightPlayer
+    } = this.state;
+
+    let la_player = [{ ...leftPlayer, position: leftPosition }].concat([
+      { ...rightPlayer, position: rightPosition }
+    ]);
+    let lo_currentPlayer = la_player.find(
+      player => player.name === currentPlayer
+    );
+    let lo_otherSidePlayer = la_player.find(
+      player => player.name !== currentPlayer
+    );
+
+    if (lo_currentPlayer.stepCount === 0) return;
+
+    let HA = Math.abs(event - lo_currentPlayer.position);
+    if (lo_currentPlayer.stepCount - HA < 0) return;
+
+    if (currentPlayer === "leftPlayer") {
+      if (event >= lo_otherSidePlayer.position) return;
+    } else {
+      if (event <= lo_otherSidePlayer.position) return;
+    }
+
+    let ln_stepCount = lo_currentPlayer.stepCount - HA;
+    let ln_position = event;
+    let ls_nextPlayer =
+      ln_stepCount > 0 ? lo_currentPlayer.name : lo_otherSidePlayer.name;
+    let lb_isEnemyLoseMark = false;
+
+    if (
+      (lo_otherSidePlayer.position === minLength ||
+        lo_otherSidePlayer.position === maxLength) &&
+      Math.abs(event - lo_otherSidePlayer.position) === 1
+    ) {
+      lb_isEnemyLoseMark = true;
+    }
+
+    let lo_game = {
+      id: id,
+      isLoseMark: lb_isEnemyLoseMark
+    };
+
+    this.playerHandler(
+      currentPlayer,
+      ln_position,
+      ln_stepCount,
+      ls_nextPlayer,
+      lo_game
+    );
   };
 
   render() {
@@ -242,7 +293,7 @@ export class Strip extends Component {
       rightPosition
     } = this.state;
 
-    let le = Array(maxLength + 1)
+    let stripLength = Array(maxLength + 1)
       .fill()
       .map((_, i) => {
         let who = {};
@@ -255,13 +306,15 @@ export class Strip extends Component {
           }
         }
 
-        return <Box key={i} index={i} who={who} />;
+        return (
+          <Box key={i} index={i} who={who} clickBox={this.clickBox} />
+        );
       });
 
     let _render =
       leftPosition !== rightPosition ? (
         <div className="game">
-          <div className="container">{le}</div>
+          <div className="container">{stripLength}</div>
         </div>
       ) : null;
 

@@ -38,6 +38,11 @@ class App extends Component {
     this.buttonRef = React.createRef();
   }
 
+  componentDidMount() {
+    // keydown 事件
+    document.addEventListener("keydown", this.handleOnKeyDown);
+  }
+
   // 產生步數
   generateSetpCount = () => {
     this.buttonRef.current.disabled = "disabled";
@@ -62,7 +67,7 @@ class App extends Component {
   };
 
   // [狀態更新] 玩家步數、下一位玩家
-  playerHandler = (_stepCount, _nextPlayer, _enemyLose, _game) => {
+  playerHandler = (_stepCount, _nextPlayer, _game) => {
     let { currentPlayer, games } = this.state;
 
     let ln_gameIdx = games.findIndex(data => data.id !== _game.id);
@@ -83,15 +88,20 @@ class App extends Component {
     this.buttonRef.current.disabled = "";
   };
 
+  // todo ...
+  handleOnKeyDown = event => {
+    console.log(event);
+  };
+
   render() {
     let { leftPlayer, rightPlayer, currentPlayer, games } = this.state;
 
     let strip = games.map(data => {
       return (
         <Strip
+          currentPlayer={currentPlayer}
           leftPlayer={leftPlayer}
           rightPlayer={rightPlayer}
-          currentPlayer={currentPlayer}
           playerHandler={this.playerHandler}
           max={data.length}
           id={data.id}
