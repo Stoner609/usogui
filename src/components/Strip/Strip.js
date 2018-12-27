@@ -325,8 +325,8 @@ export class Strip extends Component {
           <div className="control">
             {/* <button onClick={this.btnLeft}></button>
             <button onClick={this.btnRight}></button> */}
-            <span class="arrow" onClick={this.btnLeft}>❮</span>
-            <span class="arrow" onClick={this.btnRight}>❯</span>
+            <span className="arrow" onClick={this.btnLeft}>❮</span>
+            <span className="arrow" onClick={this.btnRight}>❯</span>
           </div>
         </div>
       ) : null;

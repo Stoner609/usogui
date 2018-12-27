@@ -4,7 +4,7 @@
   position: relative;
   border: 1px solid black;
   background: #e5e6e8;
-  box-shadow:-2px 12px 36px rgba(0,0,0,0.3), -43px 9px 72px rgba(0,0,0,0.25);
+  box-shadow:-2px 12px 36px rgba(0,0,0,0.3);
   margin: 1px;
   cursor: pointer;
 }
