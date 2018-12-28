@@ -19,17 +19,57 @@
 
 .control button {
   margin: 2px;
+  background-color: #f4511e;
+  border-radius: 4px;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  width: 100px;
+  cursor: pointer;
+  transition: all 0.5s;
 }
 
-.arrow {
-  display: inline-block;
-  line-height: 2.5em;
-  text-align: center;
-  background: #333;
-  color: white;
-  font-size: 1em;
-  width: 2.5em;
-  transition: margin 200ms;
-  margin-left: .75em;
+.control button span {
   cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.control button .right:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.control button .left:after {
+  content: "\00AB";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: -20px;
+  transition: 0.5s;
+}
+
+.control .rightBtn:hover span {
+  padding-right: 25px;
+}
+
+.control .leftBtn:hover span {
+  padding-left: 25px;
+}
+
+.control .rightBtn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.control .leftBtn:hover span:after {
+  opacity: 1;
+  left: 0;
 }

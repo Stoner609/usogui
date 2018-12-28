@@ -36,9 +36,15 @@ class App extends Component {
     };
 
     this.buttonRef = React.createRef();
+    this.currentComp = 0;
+    this.go = [];
   }
 
   componentDidMount() {
+    this.state.games.forEach(x => {
+      this.go.push(React.createRef());
+    })
+
     // keydown 事件
     document.addEventListener("keydown", this.handleOnKeyDown);
   }
@@ -90,13 +96,33 @@ class App extends Component {
 
   // todo ...
   handleOnKeyDown = event => {
-    console.log(event);
+    const h = {
+      32: () => {
+        this.generateSetpCount();
+      },
+      39: () => {
+        this.go[this.currentComp].current.btnRight();
+      },
+      37: () => {
+        this.go[this.currentComp].current.btnLeft();
+      },
+      38: () => {
+        this.currentComp = 0
+      },
+      40: () => {
+        this.currentComp = 1
+      } 
+    }
+
+    if (typeof h[event.keyCode] === 'function') {
+      h[event.keyCode]();
+    }
   };
 
   render() {
     let { leftPlayer, rightPlayer, currentPlayer, games } = this.state;
 
-    let strip = games.map(data => {
+    let strip = games.map((data, idx) => {
       return (
         <Strip
           currentPlayer={currentPlayer}
@@ -107,6 +133,7 @@ class App extends Component {
           id={data.id}
           isLoseMark={data.isLoseMark}
           key={data.id}
+          ref={this.go[idx]}
         />
       );
     });

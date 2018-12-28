@@ -3,12 +3,9 @@ import React, { Component } from "react";
 import "./Box.css";
 
 export class Box extends Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-  }
-
-  componentDidMount() {}
+  // constructor(props) {
+  //   super(props);
+  // }
 
   clickBox = () => {
     let locationIndex = this.props.index;
@@ -16,28 +13,22 @@ export class Box extends Component {
   };
 
   render() {
+    const { currentPlayer, who } = this.props;
     let shining = "";
-    if (
-      this.props.currentPlayer === "leftPlayer" &&
-      this.props.who.name === "leftPlayer"
-    ) {
+
+    if (currentPlayer === "leftPlayer" && who.name === "leftPlayer") {
       shining = "radius_red_animation";
-    } else if (
-      this.props.currentPlayer === "rightPlayer" &&
-      this.props.who.name === "rightPlayer"
-    ) {
+    } else if (currentPlayer === "rightPlayer" && who.name === "rightPlayer") {
       shining = "radius_green_animation";
     }
 
-    let radiusColor =
-      this.props.who.name === "leftPlayer"
+    let radiusStyle =
+      who.name === "leftPlayer"
         ? ["radius", "radius_red", `${shining}`]
         : ["radius", "radius_green", `${shining}`];
 
     let radius =
-      this.props.who.name == null ? null : (
-        <div className={radiusColor.join(" ")} />
-      );
+      who.name == null ? null : <div className={radiusStyle.join(" ")} />;
 
     return (
       <div className="box" onClick={this.clickBox}>

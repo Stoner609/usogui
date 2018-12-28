@@ -323,19 +323,17 @@ export class Strip extends Component {
         <div className="game">
           <div className="game_container">{stripLength}</div>
           <div className="control">
-            {/* <button onClick={this.btnLeft}></button>
-            <button onClick={this.btnRight}></button> */}
-            <span className="arrow" onClick={this.btnLeft}>❮</span>
-            <span className="arrow" onClick={this.btnRight}>❯</span>
+            <button className="leftBtn" onClick={this.btnLeft}>
+              <span className="left">Light</span>
+            </button>
+            <button className="rightBtn" onClick={this.btnRight}>
+              <span className="right">Right</span>
+            </button>
           </div>
         </div>
       ) : null;
 
-    return (
-      <Aux>
-        {_render}
-      </Aux>
-    );
+    return <Aux>{_render}</Aux>;
   }
 }
 
