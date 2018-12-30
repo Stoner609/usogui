@@ -39,7 +39,8 @@ export class Strip extends Component {
     if (
       nextState.leftPosition === this.state.leftPosition &&
       nextState.rightPosition === this.state.rightPosition &&
-      nextProps.currentPlayer === this.props.currentPlayer
+      nextProps.currentPlayer === this.props.currentPlayer &&
+      nextProps.currentGameId === this.props.currentGameId
     ) {
       return false;
     }
@@ -294,6 +295,11 @@ export class Strip extends Component {
       rightPosition
     } = this.state;
 
+    let locked = false;
+    if (this.props.currentGameId === this.props.id) {
+      locked = true;
+    }
+
     let stripLength = Array(maxLength + 1)
       .fill()
       .map((_, i) => {
@@ -313,6 +319,8 @@ export class Strip extends Component {
             index={i}
             who={who}
             currentPlayer={this.props.currentPlayer}
+            currentGameId={this.props.currentGameId}
+            locked={locked}
             clickBox={this.clickBox}
           />
         );

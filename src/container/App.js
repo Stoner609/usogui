@@ -15,38 +15,40 @@ class App extends Component {
       currentPlayer: gName.leftPlayer,
       leftPlayer: {
         name: gName.leftPlayer,
-        stepCount: 0
+        stepCount: 0,
+        playName: "斑目貘"
       },
       rightPlayer: {
         name: gName.rightPlayer,
-        stepCount: 0
+        stepCount: 0,
+        playName: "切間創一"
       },
       games: [
         {
-          id: 1,
+          id: 0,
           isLoseMark: false,
           length: 9
         },
         {
-          id: 2,
+          id: 1,
           isLoseMark: false,
           length: 4
         }
-      ]
+      ],
+      currentGameId: 0
     };
 
     this.buttonRef = React.createRef();
-    this.currentComp = 0;
-    this.go = [];
+    this.stripComponents = [];
   }
 
   componentDidMount() {
     this.state.games.forEach(x => {
-      this.go.push(React.createRef());
-    })
+      this.stripComponents.push(React.createRef());
+    });
 
     // keydown 事件
-    document.addEventListener("keydown", this.handleOnKeyDown);
+    document.addEventListener("keydown", this.keyDownHandler);
   }
 
   // 產生步數
@@ -94,33 +96,43 @@ class App extends Component {
     this.buttonRef.current.disabled = "";
   };
 
-  // todo ...
-  handleOnKeyDown = event => {
+  // 鍵盤事件
+  keyDownHandler = event => {
+    let { currentGameId } = this.state;
     const h = {
       32: () => {
         this.generateSetpCount();
       },
       39: () => {
-        this.go[this.currentComp].current.btnRight();
+        this.stripComponents[currentGameId].current.btnRight();
       },
       37: () => {
-        this.go[this.currentComp].current.btnLeft();
+        this.stripComponents[currentGameId].current.btnLeft();
       },
       38: () => {
-        this.currentComp = 0
+        this.setState({
+          currentGameId: 0
+        });
       },
       40: () => {
-        this.currentComp = 1
-      } 
-    }
+        this.setState({
+          currentGameId: 1
+        });
+      }
+    };
 
-    if (typeof h[event.keyCode] === 'function') {
+    if (typeof h[event.keyCode] === "function") {
       h[event.keyCode]();
     }
   };
 
   render() {
     let { leftPlayer, rightPlayer, currentPlayer, games } = this.state;
+
+    let imgStyle = {
+      marginTop: "20px",
+      height: "150px"
+    };
 
     let strip = games.map((data, idx) => {
       return (
@@ -133,7 +145,8 @@ class App extends Component {
           id={data.id}
           isLoseMark={data.isLoseMark}
           key={data.id}
-          ref={this.go[idx]}
+          ref={this.stripComponents[idx]}
+          currentGameId={this.state.currentGameId}
         />
       );
     });
@@ -141,22 +154,38 @@ class App extends Component {
     return (
       <div className="App">
         <div className="title">
-          <span>目前回合：{this.state.currentPlayer}</span>
-          <button onClick={this.generateSetpCount} ref={this.buttonRef}>
-            步數產生器
-          </button>
+          <div>
+            <button
+              className="randomButton"
+              onClick={this.generateSetpCount}
+              ref={this.buttonRef}
+            >
+              {this.state[currentPlayer].playName}你的回合，點我產生步數
+            </button>
+          </div>
         </div>
         <div className="container">
-          <div>
-            <span>左邊步數: {this.state.leftPlayer.stepCount}</span>
+          <div className="card">
+            <img src="../img/ben.jpg" alt="" style={imgStyle} />
+            <div>
+              <span>
+                {leftPlayer.playName}殘餘步數: {leftPlayer.stepCount}
+              </span>
+            </div>
           </div>
           <div>
             <Aux>{strip}</Aux>
           </div>
-          <div>
-            <span>右邊步數:{this.state.rightPlayer.stepCount}</span>
+          <div className="card">
+            <img src="../img/one.jpg" alt="" style={imgStyle} />
+            <div>
+              <span>
+                {rightPlayer.playName}殘餘步數:{rightPlayer.stepCount}
+              </span>
+            </div>
           </div>
         </div>
+        <div className="footer">空白鍵，上下左右 都可操作</div>
       </div>
     );
   }

@@ -16,9 +16,9 @@ export class Box extends Component {
     const { currentPlayer, who } = this.props;
     let shining = "";
 
-    if (currentPlayer === "leftPlayer" && who.name === "leftPlayer") {
+    if (currentPlayer === "leftPlayer" && who.name === "leftPlayer" && this.props.locked) {
       shining = "radius_red_animation";
-    } else if (currentPlayer === "rightPlayer" && who.name === "rightPlayer") {
+    } else if (currentPlayer === "rightPlayer" && who.name === "rightPlayer"&& this.props.locked) {
       shining = "radius_green_animation";
     }
 

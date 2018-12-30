@@ -10,5 +10,21 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.container .card {
+  width: 25vw;
+  height: 50vh;
+  background: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.randomButton {
+  border: none;
+  padding: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
 }
