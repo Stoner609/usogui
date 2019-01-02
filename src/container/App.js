@@ -93,7 +93,9 @@ class App extends Component {
       return lo_newData;
     });
 
-    this.buttonRef.current.disabled = "";
+    if (_stepCount === 0) {
+      this.buttonRef.current.disabled = "";
+    }
   };
 
   // 鍵盤事件
@@ -160,7 +162,7 @@ class App extends Component {
               onClick={this.generateSetpCount}
               ref={this.buttonRef}
             >
-              {this.state[currentPlayer].playName}你的回合，點我產生步數
+              {this.state[currentPlayer].playName}的回合，點我產生步數
             </button>
           </div>
         </div>
