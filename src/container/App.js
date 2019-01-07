@@ -3,6 +3,11 @@ import { Strip } from "../components/Strip/Strip";
 import Aux from "../hoc/_aux";
 import "./App.css";
 
+export const Hello = React.createContext({
+  isLose: false,
+  toggleLose: () => {}
+});
+
 const gName = {
   leftPlayer: "leftPlayer",
   rightPlayer: "rightPlayer"
@@ -35,7 +40,8 @@ class App extends Component {
           length: 4
         }
       ],
-      currentGameId: 0
+      currentGameId: 0,
+      isLose: false
     };
 
     this.buttonRef = React.createRef();
@@ -128,6 +134,10 @@ class App extends Component {
     }
   };
 
+  toggleLose = () => {
+    console.log(123);
+  };
+
   render() {
     let { leftPlayer, rightPlayer, currentPlayer, games } = this.state;
 
@@ -154,41 +164,45 @@ class App extends Component {
     });
 
     return (
-      <div className="App">
-        <div className="title">
-          <div>
-            <button
-              className="randomButton"
-              onClick={this.generateSetpCount}
-              ref={this.buttonRef}
-            >
-              {this.state[currentPlayer].playName}的回合，點我產生步數
-            </button>
-          </div>
-        </div>
-        <div className="container">
-          <div className="card">
-            <img src="../img/ben.jpg" alt="" style={imgStyle} />
+      <Hello.Provider
+        value={{ isLose: this.state.isLose, toggleLose: this.toggleLose }}
+      >
+        <div className="App">
+          <div className="title">
             <div>
-              <span>
-                {leftPlayer.playName}殘餘步數: {leftPlayer.stepCount}
-              </span>
+              <button
+                className="randomButton"
+                onClick={this.generateSetpCount}
+                ref={this.buttonRef}
+              >
+                {this.state[currentPlayer].playName}的回合，點我產生步數
+              </button>
             </div>
           </div>
-          <div>
-            <Aux>{strip}</Aux>
-          </div>
-          <div className="card">
-            <img src="../img/one.jpg" alt="" style={imgStyle} />
+          <div className="container">
+            <div className="card">
+              <img src="../img/ben.jpg" alt="" style={imgStyle} />
+              <div>
+                <span>
+                  {leftPlayer.playName}殘餘步數: {leftPlayer.stepCount}
+                </span>
+              </div>
+            </div>
             <div>
-              <span>
-                {rightPlayer.playName}殘餘步數:{rightPlayer.stepCount}
-              </span>
+              <Aux>{strip}</Aux>
+            </div>
+            <div className="card">
+              <img src="../img/one.jpg" alt="" style={imgStyle} />
+              <div>
+                <span>
+                  {rightPlayer.playName}殘餘步數:{rightPlayer.stepCount}
+                </span>
+              </div>
             </div>
           </div>
+          <div className="footer">空白鍵，上下左右 都可操作</div>
         </div>
-        <div className="footer">空白鍵，上下左右 都可操作</div>
-      </div>
+      </Hello.Provider>
     );
   }
 }

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Aux from "../../hoc/_aux";
 import Box from "../Box/Box";
-
+import { Hello } from "../../container/App";
 import "./Strip.css";
+
+let stateContext = null;
 
 export class Strip extends Component {
   constructor(props) {
@@ -60,6 +62,7 @@ export class Strip extends Component {
             this.state.rightPosition - this.state.leftPosition === 1
           ) {
             alert(currentPlayer + "你他媽輸了");
+            stateContext.toggleLose();
           }
           break;
         }
@@ -69,6 +72,7 @@ export class Strip extends Component {
             this.state.rightPosition - this.state.leftPosition === 1
           ) {
             alert(currentPlayer + "你他媽輸了");
+            stateContext.toggleLose();
           }
           break;
         }
@@ -326,7 +330,7 @@ export class Strip extends Component {
         );
       });
 
-    let _render =
+    let _render = obj =>
       leftPosition !== rightPosition ? (
         <div className="game">
           <div className="game_container">{stripLength}</div>
@@ -341,7 +345,15 @@ export class Strip extends Component {
         </div>
       ) : null;
 
-    return <Aux>{_render}</Aux>;
+    // return <Aux>{_render}</Aux>;
+    return (
+      <Hello.Consumer>
+        {obj => {
+          stateContext = obj;
+          return <Aux>{_render(obj)}</Aux>;
+        }}
+      </Hello.Consumer>
+    );
   }
 }
 
