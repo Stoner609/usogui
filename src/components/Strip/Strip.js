@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Aux from "../../hoc/_aux";
 import Box from "../Box/Box";
-import { Hello } from "../../container/App";
+import { Context } from "../../container/App";
 import "./Strip.css";
 
 let stateContext = null;
@@ -347,12 +347,12 @@ export class Strip extends Component {
 
     // return <Aux>{_render}</Aux>;
     return (
-      <Hello.Consumer>
+      <Context.Consumer>
         {obj => {
           stateContext = obj;
           return <Aux>{_render(obj)}</Aux>;
         }}
-      </Hello.Consumer>
+      </Context.Consumer>
     );
   }
 }

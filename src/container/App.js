@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Strip } from "../components/Strip/Strip";
-import Aux from "../hoc/_aux";
+import Card from "../components/Card/Card";
+
 import "./App.css";
 
-export const Hello = React.createContext({
+export const Context = React.createContext({
   isLose: false,
   toggleLose: () => {}
 });
@@ -21,12 +22,14 @@ class App extends Component {
       leftPlayer: {
         name: gName.leftPlayer,
         stepCount: 0,
-        playName: "斑目貘"
+        playName: "斑目貘",
+        url: '../img/ben.jpg',
       },
       rightPlayer: {
         name: gName.rightPlayer,
         stepCount: 0,
-        playName: "切間創一"
+        playName: "切間創一",
+        url: '../img/one.jpg',
       },
       games: [
         {
@@ -119,9 +122,15 @@ class App extends Component {
         this.generateSetpCount();
       },
       39: () => {
+        if (this.state[this.state.currentPlayer].stepCount === 0) {
+          return;
+        }
         this.stripComponents[currentGameId].current.btnRight();
       },
       37: () => {
+        if (this.state[this.state.currentPlayer].stepCount === 0) {
+          return;
+        }
         this.stripComponents[currentGameId].current.btnLeft();
       },
       38: () => {
@@ -150,11 +159,6 @@ class App extends Component {
   render() {
     let { leftPlayer, rightPlayer, currentPlayer, games } = this.state;
 
-    let imgStyle = {
-      marginTop: "20px",
-      height: "150px"
-    };
-
     let strip = games.map((data, idx) => {
       return (
         <Strip
@@ -173,7 +177,7 @@ class App extends Component {
     });
 
     return (
-      <Hello.Provider
+      <Context.Provider
         value={{ isLose: this.state.isLose, toggleLose: this.toggleLose }}
       >
         <div className="App">
@@ -189,29 +193,15 @@ class App extends Component {
             </div>
           </div>
           <div className="container">
-            <div className="card">
-              <img src="../img/ben.jpg" alt="" style={imgStyle} />
-              <div>
-                <span>
-                  {leftPlayer.playName}殘餘步數: {leftPlayer.stepCount}
-                </span>
-              </div>
-            </div>
+            <Card profile={leftPlayer} />
             <div>
-              <Aux>{strip}</Aux>
+              {strip}
             </div>
-            <div className="card">
-              <img src="../img/one.jpg" alt="" style={imgStyle} />
-              <div>
-                <span>
-                  {rightPlayer.playName}殘餘步數:{rightPlayer.stepCount}
-                </span>
-              </div>
-            </div>
+            <Card profile={rightPlayer} />
           </div>
           <div className="footer">空白鍵，上下左右 都可操作</div>
         </div>
-      </Hello.Provider>
+      </Context.Provider>
     );
   }
 }
