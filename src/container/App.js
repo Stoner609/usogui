@@ -57,6 +57,13 @@ class App extends Component {
     document.addEventListener("keydown", this.keyDownHandler);
   }
 
+  componentDidUpdate() {
+    if (this.state.isLose) {
+      console.log('輸了');
+      
+    }
+  }
+
   // 產生步數
   generateSetpCount = () => {
     this.buttonRef.current.disabled = "disabled";
@@ -135,7 +142,9 @@ class App extends Component {
   };
 
   toggleLose = () => {
-    console.log(123);
+    this.setState({
+      isLose: true
+    });
   };
 
   render() {

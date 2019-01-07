@@ -61,7 +61,7 @@ export class Strip extends Component {
             this.state.leftPosition === 0 &&
             this.state.rightPosition - this.state.leftPosition === 1
           ) {
-            alert(currentPlayer + "你他媽輸了");
+            // alert(currentPlayer + "你他媽輸了");
             stateContext.toggleLose();
           }
           break;
@@ -71,7 +71,7 @@ export class Strip extends Component {
             this.state.rightPosition === this.state.maxLength &&
             this.state.rightPosition - this.state.leftPosition === 1
           ) {
-            alert(currentPlayer + "你他媽輸了");
+            // alert(currentPlayer + "你他媽輸了");
             stateContext.toggleLose();
           }
           break;
