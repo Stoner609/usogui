@@ -23,13 +23,13 @@ class App extends Component {
         name: gName.leftPlayer,
         stepCount: 0,
         playName: "斑目貘",
-        url: '../img/ben.jpg',
+        url: "../img/ben.jpg"
       },
       rightPlayer: {
         name: gName.rightPlayer,
         stepCount: 0,
         playName: "切間創一",
-        url: '../img/one.jpg',
+        url: "../img/one.jpg"
       },
       games: [
         {
@@ -62,8 +62,7 @@ class App extends Component {
 
   componentDidUpdate() {
     if (this.state.isLose) {
-      console.log('輸了');
-      
+      alert(this.state[this.state.currentPlayer].playName + "輸了");
     }
   }
 
@@ -194,9 +193,7 @@ class App extends Component {
           </div>
           <div className="container">
             <Card profile={leftPlayer} />
-            <div>
-              {strip}
-            </div>
+            <div>{strip}</div>
             <Card profile={rightPlayer} />
           </div>
           <div className="footer">空白鍵，上下左右 都可操作</div>
