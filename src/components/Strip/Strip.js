@@ -11,9 +11,9 @@ export class Strip extends Component {
     super(props);
     this.state = {
       minLength: 0,
-      maxLength: this.props.max,
+      maxLength: props.max,
       leftPosition: 0,
-      rightPosition: this.props.max,
+      rightPosition: props.max,
       leftPlayer: props.leftPlayer,
       rightPlayer: props.rightPlayer
     };
@@ -299,21 +299,21 @@ export class Strip extends Component {
 
     let stripLength = Array(maxLength + 1)
       .fill()
-      .map((_, i) => {
+      .map((_, index) => {
         let who = {};
         if (leftPosition !== rightPosition) {
-          if (leftPosition === i) {
+          if (leftPosition === index) {
             who = leftPlayer;
           }
-          if (rightPosition === i) {
+          if (rightPosition === index) {
             who = rightPlayer;
           }
         }
 
         return (
           <Box
-            key={i}
-            index={i}
+            key={index}
+            index={index}
             who={who}
             currentPlayer={this.props.currentPlayer}
             currentGameId={this.props.currentGameId}
