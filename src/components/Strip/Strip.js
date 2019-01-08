@@ -50,28 +50,21 @@ export class Strip extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (
-      prevProps.isLoseMark !== this.props.isLoseMark &&
-      this.props.isLoseMark
-    ) {
-      let { currentPlayer } = this.props;
+    const { currentPlayer, isLoseMark } = this.props;
+    let { leftPosition, rightPosition, maxLength } = this.state;
+    if (prevProps.isLoseMark !== isLoseMark && isLoseMark) {
       switch (currentPlayer) {
         case "leftPlayer": {
-          if (
-            this.state.leftPosition === 0 &&
-            this.state.rightPosition - this.state.leftPosition === 1
-          ) {
-            // alert(currentPlayer + "你他媽輸了");
+          if (leftPosition === 0 && rightPosition - leftPosition === 1) {
             stateContext.toggleLose();
           }
           break;
         }
         case "rightPlayer": {
           if (
-            this.state.rightPosition === this.state.maxLength &&
-            this.state.rightPosition - this.state.leftPosition === 1
+            rightPosition === maxLength &&
+            rightPosition - leftPosition === 1
           ) {
-            // alert(currentPlayer + "你他媽輸了");
             stateContext.toggleLose();
           }
           break;
@@ -238,8 +231,8 @@ export class Strip extends Component {
 
     if (lo_currentPlayer.stepCount === 0) return;
 
-    let HA = Math.abs(event - lo_currentPlayer.position);
-    if (lo_currentPlayer.stepCount - HA < 0) return;
+    let ln_move = Math.abs(event - lo_currentPlayer.position);
+    if (lo_currentPlayer.stepCount - ln_move < 0) return;
 
     if (currentPlayer === "leftPlayer") {
       if (event >= lo_otherSidePlayer.position) return;
@@ -247,7 +240,7 @@ export class Strip extends Component {
       if (event <= lo_otherSidePlayer.position) return;
     }
 
-    let ln_stepCount = lo_currentPlayer.stepCount - HA;
+    let ln_stepCount = lo_currentPlayer.stepCount - ln_move;
     let ln_position = event;
     let ls_nextPlayer =
       ln_stepCount > 0 ? lo_currentPlayer.name : lo_otherSidePlayer.name;

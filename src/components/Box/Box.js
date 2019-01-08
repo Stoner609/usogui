@@ -13,12 +13,16 @@ export class Box extends Component {
   };
 
   render() {
-    const { currentPlayer, who } = this.props;
-    let shining = "";
+    const { currentPlayer, who, locked } = this.props;
 
-    if (currentPlayer === "leftPlayer" && who.name === "leftPlayer" && this.props.locked) {
+    let shining = "";
+    if (currentPlayer === "leftPlayer" && who.name === "leftPlayer" && locked) {
       shining = "radius_red_animation";
-    } else if (currentPlayer === "rightPlayer" && who.name === "rightPlayer"&& this.props.locked) {
+    } else if (
+      currentPlayer === "rightPlayer" &&
+      who.name === "rightPlayer" &&
+      locked
+    ) {
       shining = "radius_green_animation";
     }
 

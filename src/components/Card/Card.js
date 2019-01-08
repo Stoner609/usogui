@@ -12,13 +12,9 @@ const Card = props => {
     <div className="card">
       <img src={url} alt="" style={imgStyle} />
       <div>
-        <span>
-          {playName}殘餘步數: 
-        </span>
+        <span>{playName}殘餘步數:</span>
         <div>
-          <label className="card-fontSize">
-            {stepCount}
-          </label>
+          <label className="card-fontSize">{stepCount}</label>
         </div>
       </div>
     </div>
